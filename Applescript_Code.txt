@@ -1,0 +1,30 @@
+--THIS IS THE APPLESCRIPT CODE
+
+on quit
+	try
+		tell application "System Events" to tell process "Deluge"
+			activate
+			set frontmost to true
+			windows where title contains "Add Torrents"
+			if result is not {} then perform action "AXRaise" of item 1 of result
+		end tell
+	end try
+end quit
+
+on open location this_URL
+	try
+		tell application "Finder" to set delugePath to POSIX path of (application file id "org.deluge" as string)
+		set appExists to true
+	on error
+		set appExists to false
+		display alert "Deluge.app must be installed in order to use this plug-in." as critical
+		return
+	end try
+	set delugeArgument to quoted form of this_URL
+	try
+		tell application "Deluge" to activate
+	end try
+	do shell script (quoted form of (delugePath & "/Contents/MacOS/Deluge") & " add " & delugeArgument & "; return;")
+	quit
+end open location
+quit
