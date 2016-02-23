@@ -27,8 +27,8 @@ on open location this_URL
 end open location
 tell application "Finder" to set thisPath to (POSIX path of (application file id "org.deluge.MagnetURIHandler" as string))
 log thisPath
-set check_default to do shell script "MAGNET_DEFAULT_APP=`VERSIONER_PERL_PREFER_32_BIT=1 perl -MMac::InternetConfig -le \"print +(GetICHelper 'magnet')[1]\"`; if [[ $MAGNET_DEFAULT_APP = 'Magnet Handler' ]]; then echo TRUE; else echo FALSE; fi"
-if (check_default = "TRUE") then
+set lsToolRead to do shell script (quoted form of (thisPath & "/Contents/Resources/lstool") & " read url magnet")
+if (lsToolRead contains "Magnet Handler.app") then
 	display dialog "Magnet Handler is already the default application to handle magnet URIs" buttons {"OK"} with title "Notification" with icon POSIX file (thisPath & "/Contents/Resources/deluge_magnet.icns")
 else
 	try
@@ -39,9 +39,8 @@ Would you like to do this now?" buttons {"Yes", "No"} default button "Yes" cance
 	end try
 	try
 		if button returned of dialogResult is "Yes" then
-			set dutiPath to quoted form of (thisPath & "/Contents/Resources/duti") & " -s org.deluge.MagnetURIHandler magnet all && /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/LaunchServices.framework/Versions/A/Support/lsregister -kill -r -domain local -domain system -domain user"
-			log dutiPath
-			do shell script dutiPath
+			do shell script (quoted form of (thisPath & "/Contents/Resources/lstool") & " write url magnet org.deluge.MagnetURIHandler")
+			display dialog "Magnet Handler has now been configured as the default application to handle magnet URIs" buttons {"OK"} with title "Notification" with icon POSIX file (thisPath & "/Contents/Resources/deluge_magnet.icns")
 			
 		end if
 	end try

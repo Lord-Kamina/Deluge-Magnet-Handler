@@ -18,8 +18,10 @@
 	<string>Magnet Handler</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+	<key>CFBundleVersion</key>
+	<string>1.1.0</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.2</string>
+	<string>1.1.0</string>
 	<key>CFBundleSignature</key>
 	<string>aplt</string>
 	<key>CFBundleURLTypes</key>
@@ -49,13 +51,13 @@
 		<key>dividerCollapsed</key>
 		<false/>
 		<key>eventLogLevel</key>
-		<integer>0</integer>
+		<integer>2</integer>
 		<key>name</key>
 		<string>ScriptWindowState</string>
 		<key>positionOfDivider</key>
-		<real>421</real>
+		<real>326</real>
 		<key>savedFrame</key>
-		<string>777 288 700 672 0 0 1920 1057 </string>
+		<string>365 301 956 876 0 0 1920 1177 </string>
 		<key>selectedTab</key>
 		<string>log</string>
 	</dict>
