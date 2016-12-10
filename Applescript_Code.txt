@@ -27,8 +27,9 @@ on open location this_URL
 end open location
 tell application "Finder" to set thisPath to (POSIX path of (application file id "org.deluge.MagnetURIHandler" as string))
 log thisPath
-set lsToolRead to do shell script (quoted form of (thisPath & "/Contents/Resources/lstool") & " read url magnet")
-if (lsToolRead contains "Magnet Handler.app") then
+set lsToolRead to do shell script (quoted form of (thisPath & "/Contents/Resources/registerHandler") & " -check")
+log lsToolRead
+if (lsToolRead contains "org.deluge.magneturihandler") then
 	display dialog "Magnet Handler is already the default application to handle magnet URIs" buttons {"OK"} with title "Notification" with icon POSIX file (thisPath & "/Contents/Resources/deluge_magnet.icns")
 else
 	try
@@ -36,12 +37,14 @@ else
 
 Would you like to do this now?" buttons {"Yes", "No"} default button "Yes" cancel button "No" with title "Notification" with icon POSIX file (thisPath & "/Contents/Resources/deluge_magnet.icns")
 	on error number -128
+		return
 	end try
 	try
+	on error number -128
+		return
 		if button returned of dialogResult is "Yes" then
-			do shell script (quoted form of (thisPath & "/Contents/Resources/lstool") & " write url magnet org.deluge.MagnetURIHandler")
+			do shell script (quoted form of (thisPath & "/Contents/Resources/registerHandler") & " -register")
 			display dialog "Magnet Handler has now been configured as the default application to handle magnet URIs" buttons {"OK"} with title "Notification" with icon POSIX file (thisPath & "/Contents/Resources/deluge_magnet.icns")
-			
 		end if
 	end try
 end if
