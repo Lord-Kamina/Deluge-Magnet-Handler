@@ -26,26 +26,35 @@ on open location this_URL
 	quit
 end open location
 tell application "Finder" to set thisPath to (POSIX path of (application file id "org.deluge.MagnetURIHandler" as string))
-log thisPath
-set lsToolRead to do shell script (quoted form of (thisPath & "/Contents/Resources/registerHandler") & " -check")
-log lsToolRead
-if (lsToolRead contains "org.deluge.magneturihandler") then
-	display dialog "Magnet Handler is already the default application to handle magnet URIs" buttons {"OK"} with title "Notification" with icon POSIX file (thisPath & "/Contents/Resources/deluge_magnet.icns")
+log "Magnet Handler.app info: path to Application: " & thisPath
+set regTool to (quoted form of POSIX path of (path to resource "registerHandler"))
+set handlerCheck to regTool & " -check"
+set handlerReg to regTool & " -register"
+log "Magnet Handler.app info: path to registerHandler: " & regTool
+set retHandlerCheck to do shell script handlerCheck
+if (retHandlerCheck contains "org.deluge.magneturihandler") then
+	display dialog "Magnet Handler is already the default application to handle magnet URIs" buttons {"OK"} with title "Notification" with icon POSIX file (POSIX path of (path to resource "deluge_magnet.icns"))
 else
 	try
-		set dialogResult to display dialog "Magnet Handler has not been configured to handle magnet URIs.
-
-Would you like to do this now?" buttons {"Yes", "No"} default button "Yes" cancel button "No" with title "Notification" with icon POSIX file (thisPath & "/Contents/Resources/deluge_magnet.icns")
+		set dialogResult to display dialog "Magnet Handler has not been configured to handle magnet URIs. Would you like to do this now?" buttons {"Yes", "No"} default button "Yes" cancel button "No" with title "Notification" with icon POSIX file (POSIX path of (path to resource "deluge_magnet.icns"))
+		log dialogResult
 	on error number -128
+		display alert "Unable to complete operation: Error -128" as critical
 		return
 	end try
 	try
-	on error number -128
-		return
-		if button returned of dialogResult is "Yes" then
-			do shell script (quoted form of (thisPath & "/Contents/Resources/registerHandler") & " -register")
-			display dialog "Magnet Handler has now been configured as the default application to handle magnet URIs" buttons {"OK"} with title "Notification" with icon POSIX file (thisPath & "/Contents/Resources/deluge_magnet.icns")
+		if (button returned) of dialogResult is "Yes" then
+			set retHandlerSet to do shell script handlerReg
+			if (retHandlerSet is equal to "0") then
+				display dialog "Magnet Handler has now been configured as the default application to handle magnet URIs" buttons {"OK"} with title "Notification" with icon POSIX file (POSIX path of (path to resource "deluge_magnet.icns"))
+			else
+				display alert "We were unable to configure Magnet Handler as the default application to handle magnet URIs.
+Helper returned error code: " & retHandlerSet as critical
+			end if
 		end if
+	on error number -128
+		display alert "Unable to complete operation: Error -128" as critical
+		return
 	end try
 end if
 quit
