@@ -3,13 +3,13 @@
 
 ## Current Version
     - Version: 1.3.0
-    - Date: 2018-12-118
+    - Date: 2018-12-18
 
 ## Known Issues
 - 
 # Release Notes
 
-## [1.3.0] -  2018-12-118
+## [1.3.0] -  2018-12-18
   + ### Changed
   	+ registerHandler: 
   		+ is provided straight as the statically-linked product of its Xcode project.
@@ -24,6 +24,7 @@
 # Instructions
 *Note: If on 10.14+, the application will ask for permission to control several other apps; including `Finder.app`, `System Events.app` and possibly itself (don't ask).*
 
-1. ) Install to "Applications" folder.
-2. ) Run The application once by double-clicking it on the Finder, the application will then prompt you to register itself as the default handler for torrent files.
-3. ) Go to a browser and click on a magnet to test it.
+1. ) Download from the [Releases](https://www.github.com/Lord-Kamina/Deluge-Magnet-Handler/releases) section.
+2. ) Install to "Applications" folder.
+3. ) Run The application once by double-clicking it on the Finder, the application will then prompt you to register itself as the default handler for torrent files.
+1. ) Go to a browser and click on a magnet to test it.
